@@ -73,6 +73,32 @@
   .empty{text-align:center;color:var(--muted);padding:40px;border:1px dashed var(--line);border-radius:4px}
   .setup{max-width:640px;margin:26px auto 0;font-size:12.5px;color:var(--faint);line-height:1.7}
   .setup code{background:var(--bg2);border:1px solid var(--line);border-radius:2px;padding:1px 6px;color:var(--gold2);font-size:12px}
+  .welcome{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:4px;padding:26px 28px;margin-bottom:34px}
+  .welcome h1{margin:0 0 10px}
+  .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+  @media(max-width:640px){.steps3{grid-template-columns:1fr}}
+  .s3{border-top:1px solid var(--goldline);padding-top:12px}
+  .s3n{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:22px;display:block;margin-bottom:4px}
+  .s3 b{display:block;font-size:15px;margin-bottom:2px}
+  .s3 span{font-size:13px;color:var(--muted)}
+  .sech{font-family:var(--serif);font-weight:500;font-size:26px;margin:0 0 6px}
+  .two2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:4px}
+  @media(max-width:640px){.two2{grid-template-columns:1fr}}
+  .catrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  .catpick{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:2px;padding:8px 15px;font-size:13.5px;cursor:pointer;font-family:var(--sans)}
+  .catpick.on{background:var(--gold);color:#181410;border-color:var(--gold);font-weight:600}
+  .ex{font-size:12.5px;color:var(--faint);margin:8px 0 18px}
+  .ex button{background:none;border:none;color:var(--gold2);cursor:pointer;font-family:var(--sans);font-size:12.5px;text-decoration:underline;padding:0 4px}
+  .agent{margin:0 0 20px}
+  .agent .bubble{background:var(--card);border:1px solid var(--goldline);border-radius:4px;padding:16px 18px;font-size:14.5px;color:var(--ink);line-height:1.6}
+  .agent .bubble b{color:var(--gold2)}
+  .agent .res{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:14px}
+  .agent .rc{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:14px}
+  .agent .rc h4{font-family:var(--serif);font-weight:500;font-size:17px;margin:0 0 4px}
+  .agent .rc .p{font-size:13px;color:var(--muted)}
+  .agent .rc .pr{font-family:var(--serif);font-size:20px;font-weight:500;margin:6px 0 8px}
+  .agent .rc a{color:var(--gold2);font-size:12.5px}
+  .wbadge{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);border:1px solid var(--goldline);border-radius:2px;padding:2px 8px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -113,32 +139,46 @@
 <!-- ============ APP VIEW (inloggad) ============ -->
 <div id="app">
   <div class="topbar">
-    <div class="logo" style="font-size:20px"><span class="mark" style="width:28px;height:28px;font-size:14px">H</span>Havelo</div>
-    <div style="display:flex;align-items:center;gap:16px">
+    <a href="index.html" class="logo" style="font-size:20px"><span class="mark" style="width:28px;height:28px;font-size:14px">H</span>Havelo</a>
+    <div style="display:flex;align-items:center;gap:12px">
+      <a href="marknad.html" class="btn ghost" style="width:auto;padding:9px 15px;font-size:13px">Marknad</a>
       <span class="who" id="who"></span>
-      <button class="btn ghost" style="width:auto;padding:9px 16px;font-size:13px" onclick="logout()">Logga ut</button>
+      <button class="btn ghost" style="width:auto;padding:9px 15px;font-size:13px" onclick="logout()">Logga ut</button>
     </div>
   </div>
   <div class="appmain">
-    <div class="eyebrow">Ditt konto</div>
-    <h1>Dina bevakningar</h1>
-    <p class="subtle">Skapa en bevakning så börjar din agent leta. Du får en notis när något matchar.</p>
-
-    <div class="newbox">
-      <div class="fields">
-        <div>
-          <label>Vad söker du?</label>
-          <input id="wTitle" placeholder="T.ex. Ribbåt 6–7 m">
-        </div>
-        <div>
-          <label>Kriterier</label>
-          <input id="wCrit" placeholder="~300 tkr · 2015+ · ≥150 hk">
-        </div>
-        <button class="btn" onclick="addWatch()">Skapa</button>
+    <div class="welcome">
+      <div class="eyebrow">Ditt konto</div>
+      <h1>Välkommen till Havelo</h1>
+      <p class="subtle" style="margin-bottom:0">Din personliga köpagent. Berätta vad du vill köpa – bil, båt, husbil eller MC – så söker vi igenom marknaden åt dig, säger till när priset är rätt och hjälper dig ända fram till affär. <b style="color:var(--ink)">Du är inloggad och stannar inloggad</b> – du behöver aldrig skapa konto igen.</p>
+      <div class="steps3">
+        <div class="s3"><span class="s3n">I</span><b>Skapa en bevakning</b><span>Skriv vad du söker med egna ord.</span></div>
+        <div class="s3"><span class="s3n">II</span><b>Vi söker marknaden</b><span>Agenten går igenom annonserna åt dig.</span></div>
+        <div class="s3"><span class="s3n">III</span><b>Du får de bästa</b><span>Direkt – och en notis när nytt dyker upp.</span></div>
       </div>
     </div>
 
-    <div id="watchList"></div>
+    <div class="sech">Skapa en bevakning</div>
+    <p class="subtle" style="margin-bottom:16px">Välj kategori och beskriv vad du letar efter. Ju mer du skriver – pris, årsmodell, storlek, motor – desto träffsäkrare blir vi.</p>
+    <div class="newbox">
+      <label>Kategori</label>
+      <div class="catrow" id="wCats"></div>
+      <div class="two2">
+        <div><label>Vad söker du?</label><input id="wTitle" placeholder="T.ex. Toyota RAV4 Hybrid"></div>
+        <div><label>Kriterier</label><input id="wCrit" placeholder="Under 350 tkr · 2020+ · låg miltal · AWD"></div>
+      </div>
+      <div class="ex">Prova ett exempel:
+        <button type="button" onclick="fillEx('Ribbåt 6–7 m','~300 tkr · 2015+ · minst 150 hk','Båt')">Ribbåt</button>
+        <button type="button" onclick="fillEx('Toyota RAV4 Hybrid','Under 350 tkr · 2020+ · AWD','Bil')">RAV4</button>
+        <button type="button" onclick="fillEx('Husbil 4 bäddar','Under 700 tkr · 2016+ · automat','Husbil')">Husbil</button>
+      </div>
+      <button class="btn" style="width:auto;padding:13px 28px" onclick="addWatch()">Skapa bevakning</button>
+    </div>
+
+    <div class="agent" id="agentBox"></div>
+
+    <div class="sech" style="margin-top:36px">Dina bevakningar</div>
+    <div id="watchList" style="margin-top:14px"></div>
   </div>
 </div>
 
@@ -218,6 +258,7 @@ function showApp(session){
   document.getElementById("authView").style.display="none";
   document.getElementById("app").classList.add("show");
   document.getElementById("who").textContent = session.user.email;
+  renderWCats();
   loadWatches();
 }
 function showAuth(){
@@ -230,30 +271,76 @@ if(sb){
   sb.auth.onAuthStateChange((_event, session)=>{ if(session) showApp(session); else showAuth(); });
 }
 
-/* ---- bevakningar (kräver tabellen "watches", se setup-guiden) ---- */
+/* ---- bevakningar + agent-sök ---- */
+const WCATS=["Bil","Båt","MC","Husbil"];
+let wSelectedCat="Bil";
+function renderWCats(){
+  const el=document.getElementById("wCats"); if(!el) return;
+  el.innerHTML=WCATS.map(c=>`<button type="button" class="catpick${c===wSelectedCat?' on':''}" onclick="pickWCat('${c}')">${c}</button>`).join("");
+}
+function pickWCat(c){ wSelectedCat=c; renderWCats(); }
+function fillEx(t,k,c){ document.getElementById("wTitle").value=t; document.getElementById("wCrit").value=k; wSelectedCat=c; renderWCats(); }
+
 async function loadWatches(){
   const list=document.getElementById("watchList");
   try{
     const {data, error}=await sb.from("watches").select("*").order("created_at",{ascending:false});
     if(error) throw error;
-    if(!data.length){ list.innerHTML=`<div class="empty">Inga bevakningar än. Skapa din första ovan.</div>`; return; }
+    if(!data.length){ list.innerHTML=`<div class="empty">Du har inga bevakningar än.<br>Skapa din första ovan så börjar vi hålla koll åt dig.</div>`; return; }
     list.innerHTML=data.map(w=>`
       <div class="watch">
         <div><h3>${esc(w.titel)}</h3><p>${esc(w.kriterier||"")}</p></div>
-        <button class="del" onclick="delWatch('${w.id}')">Ta bort</button>
+        <div style="display:flex;align-items:center;gap:14px">
+          <span class="wbadge">● Bevakar</span>
+          <button class="del" onclick="delWatch('${w.id}')">Ta bort</button>
+        </div>
       </div>`).join("");
   }catch(e){
     list.innerHTML=`<div class="empty">Kunde inte hämta bevakningar. Har du skapat tabellen <b>watches</b> enligt setup-guiden?</div>`;
   }
 }
+
 async function addWatch(){
   const titel=document.getElementById("wTitle").value.trim();
   const kriterier=document.getElementById("wCrit").value.trim();
-  if(!titel) return;
-  const {error}=await sb.from("watches").insert({titel, kriterier});
-  if(error){ alert("Kunde inte spara: "+error.message); return; }
+  const box=document.getElementById("agentBox");
+  if(!titel){ box.innerHTML=`<div class="bubble" style="border-color:var(--bad);color:var(--bad)">Skriv vad du söker (t.ex. modell eller typ) först.</div>`; return; }
+  const full = wSelectedCat+" · "+titel;
+  const {error}=await sb.from("watches").insert({titel: full, kriterier});
+  if(error){ box.innerHTML=`<div class="bubble" style="border-color:var(--bad);color:var(--bad)">Kunde inte spara: ${esc(error.message)}</div>`; return; }
   document.getElementById("wTitle").value=""; document.getElementById("wCrit").value="";
   loadWatches();
+  agentSearch(wSelectedCat, titel);
+}
+
+async function agentSearch(cat, titel){
+  const box=document.getElementById("agentBox");
+  box.innerHTML=`<div class="bubble">✓ Bevakning skapad. <b>Jag söker igenom marknaden åt dig…</b></div>`;
+  if(cat!=="Bil" && cat!=="Båt"){
+    box.innerHTML=`<div class="bubble">✓ Bevakning skapad för <b>${esc(titel)}</b>. Just nu söker jag bil och båt live – <b>${esc(cat)}</b> kopplar vi på härnäst. Din bevakning ligger sparad och du får en notis så fort jag kan söka den.</div>`;
+    return;
+  }
+  try{
+    const r=await fetch(`/.netlify/functions/search?category=${encodeURIComponent(cat)}&q=${encodeURIComponent(titel)}`);
+    const d=await r.json();
+    if(!d.ok || !d.items || !d.items.length){
+      box.innerHTML=`<div class="bubble">✓ Bevakning skapad för <b>${esc(titel)}</b>. Jag hittade inga direkta träffar just nu, men jag håller koll och hör av mig så fort något matchar.</div>`;
+      return;
+    }
+    const items=d.items.slice(0,10);
+    box.innerHTML=`<div class="bubble">
+      Jag gick igenom marknaden och hittade <b>${d.count} annonser</b> för din sökning. Här är de bästa just nu:
+      <div class="res">${items.map(o=>`
+        <div class="rc">
+          <h4>${esc(o.titel)}</h4>
+          <div class="p">${[o.arsmodell,o.plats].filter(Boolean).map(esc).join(" · ")||("Från "+esc(d.source))}</div>
+          <div class="pr">${o.pris?Number(o.pris).toLocaleString("sv-SE")+" kr":"—"}</div>
+          ${o.url?`<a href="${o.url}" target="_blank">Öppna annons →</a>`:""}
+        </div>`).join("")}</div>
+    </div>`;
+  }catch(e){
+    box.innerHTML=`<div class="bubble">✓ Bevakning skapad för <b>${esc(titel)}</b>. Live-sökningen aktiveras när sök-funktionen är deployad – sen visar jag de bästa träffarna direkt här.</div>`;
+  }
 }
 async function delWatch(id){
   const {error}=await sb.from("watches").delete().eq("id", id);
