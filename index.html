@@ -282,5 +282,6 @@ function scrollStart(){ document.getElementById("start").scrollIntoView({behavio
   const e=document.getElementById("email1"); if(e) setTimeout(()=>e.focus(),400); }
 function showToast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("on");clearTimeout(window._t);window._t=setTimeout(()=>t.classList.remove("on"),2800);}
 </script>
+<div style="position:fixed;bottom:8px;right:10px;font-size:10px;letter-spacing:.5px;color:#6f6a61;font-family:-apple-system,BlinkMacSystemFont,sans-serif;opacity:.6;z-index:9999;pointer-events:none">Havelo v0.3 · 19 jul</div>
 </body>
 </html>
