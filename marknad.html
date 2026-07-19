@@ -118,6 +118,8 @@
   <div id="notice"></div>
   <div class="count" id="count"></div>
   <div class="grid" id="grid"></div>
+  <div class="count" id="liveCount" style="margin-top:36px"></div>
+  <div class="grid" id="liveGrid" style="padding-bottom:60px"></div>
 </div>
 
 <!-- POST MODAL -->
@@ -178,6 +180,7 @@ async function refreshSession(){
 }
 
 async function search(){
+  loadLive();
   const grid=document.getElementById("grid"), count=document.getElementById("count");
   if(!CONFIGURED){
     document.getElementById("notice").innerHTML=`<div class="notice">⚙️ Lägg in dina Supabase-nycklar högst upp i skriptet (samma som i login.html) så aktiveras sök och annonsering. Se setup-guiden.</div>`;
@@ -214,6 +217,29 @@ async function search(){
     </div>`).join("");
 }
 
+async function loadLive(){
+  const lc=document.getElementById("liveCount"), lg=document.getElementById("liveGrid");
+  const cat=activeCat, q=document.getElementById("q").value.trim();
+  const catParam = cat==="Bil" ? "Bil" : "Båt"; // idag: Bil→Wayke, annars→boat24
+  lc.innerHTML=`<span style="color:var(--muted)">Söker marknaden live…</span>`; lg.innerHTML="";
+  try{
+    const r=await fetch(`/.netlify/functions/search?category=${encodeURIComponent(catParam)}&q=${encodeURIComponent(q)}`);
+    const d=await r.json();
+    if(!d.ok){ lc.innerHTML=`<span style="color:var(--muted)">Live-sök svarade fel (${esc(String(d.error||d.httpStatus||"?"))}).</span>`; return; }
+    if(!d.items || !d.items.length){ lc.innerHTML=`<span style="color:var(--muted)">Live från ${esc(d.source||"")}: inga träffar tolkade ännu.</span>`; return; }
+    lc.innerHTML=`<span style="color:var(--gold2)">Live från ${esc(d.source)}</span> · ${d.items.length} objekt`;
+    lg.innerHTML=d.items.map(o=>`
+      <div class="card">
+        <div class="kat">${esc(o.kalla||d.source)}</div>
+        <h3>${esc(o.titel)}</h3>
+        <div class="specs">${[o.arsmodell,o.plats].filter(Boolean).map(esc).join(" · ")}</div>
+        <div class="pris">${o.pris?kr(o.pris):"—"}</div>
+        <div class="foot"><span class="kontakt">Extern annons</span>${o.url?`<a class="del" style="color:var(--gold2)" href="${o.url}" target="_blank">Öppna →</a>`:""}</div>
+      </div>`).join("");
+  }catch(e){
+    lc.innerHTML=`<span style="color:var(--muted)">Live-sök aktiveras när funktionen är deployad.</span>`;
+  }
+}
 function openPost(){
   if(!CONFIGURED){ alert("Koppla Supabase först (se setup-guiden)."); return; }
   if(!session){ window.location.href="login.html"; return; }
