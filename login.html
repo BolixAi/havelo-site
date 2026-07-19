@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Havelo – Logga in</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d0d0f'/%3E%3Ccircle cx='16' cy='16' r='8.5' fill='none' stroke='%23c9a96a' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0d0f; --bg2:#121013; --card:#17151a; --line:rgba(255,255,255,.08);
+    --ink:#efeae1; --muted:#9b9488; --faint:#6f6a61;
+    --gold:#c9a96a; --gold2:#e3ca94; --goldline:rgba(201,169,106,.24);
+    --good:#8fb39b; --bad:#c98a86;
+    --serif:'Cormorant Garamond',Georgia,serif; --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);background:radial-gradient(900px 500px at 80% -10%,rgba(201,169,106,.08),var(--bg) 60%);
+    color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+  a{color:var(--gold2);text-decoration:none}
+  .logo{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-weight:600;font-size:24px;letter-spacing:.5px}
+  .logo .mark{width:32px;height:32px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:16px;font-family:var(--serif);font-weight:600}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;background:var(--gold);color:#181410;font-weight:600;font-size:15px;border:none;padding:14px;border-radius:2px;cursor:pointer;font-family:var(--sans);letter-spacing:.3px;transition:.2s}
+  .btn:hover{background:var(--gold2)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn.ghost{background:transparent;border:1px solid var(--goldline);color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--gold2);background:transparent}
+  .btn.google{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .btn.google:hover{border-color:var(--muted)}
+  /* AUTH */
+  .authwrap{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 20px}
+  .card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:34px 30px 30px}
+  .card .logo{justify-content:center;margin-bottom:6px}
+  .tagline{text-align:center;color:var(--muted);font-size:13.5px;margin-bottom:26px}
+  .tabs{display:flex;border:1px solid var(--line);border-radius:2px;margin-bottom:22px;overflow:hidden}
+  .tab{flex:1;background:transparent;border:none;color:var(--muted);font-family:var(--sans);font-size:14px;font-weight:600;padding:11px;cursor:pointer}
+  .tab.active{background:rgba(201,169,106,.1);color:var(--gold2)}
+  label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:0 0 7px}
+  input{width:100%;background:transparent;border:1px solid var(--line);border-radius:2px;padding:13px 14px;color:var(--ink);font-size:15px;font-family:var(--sans);margin-bottom:16px}
+  input:focus{outline:none;border-color:var(--gold)}
+  input::placeholder{color:var(--faint)}
+  .row-sep{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--faint);font-size:12px}
+  .row-sep:before,.row-sep:after{content:"";flex:1;height:1px;background:var(--line)}
+  .msg{font-size:13.5px;padding:11px 13px;border-radius:2px;margin-bottom:16px;display:none}
+  .msg.show{display:block}
+  .msg.err{background:rgba(201,138,134,.12);border:1px solid rgba(201,138,134,.3);color:var(--bad)}
+  .msg.ok{background:rgba(143,179,155,.12);border:1px solid rgba(143,179,155,.3);color:var(--good)}
+  .msg.warn{background:rgba(201,169,106,.1);border:1px solid var(--goldline);color:var(--gold2)}
+  .fineprint{text-align:center;font-size:12px;color:var(--faint);margin-top:18px}
+  .linkbtn{background:none;border:none;color:var(--gold2);font-family:var(--sans);font-size:13.5px;cursor:pointer;padding:0}
+  .linkbtn:hover{text-decoration:underline}
+  /* APP */
+  #app{display:none;flex:1;flex-direction:column}
+  #app.show{display:flex}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid var(--line)}
+  .who{font-size:13px;color:var(--muted)}
+  .appmain{max-width:820px;margin:0 auto;padding:48px 24px;width:100%}
+  .eyebrow{font-size:11.5px;text-transform:uppercase;letter-spacing:3px;color:var(--gold);font-weight:600;margin-bottom:12px}
+  h1{font-family:var(--serif);font-weight:500;font-size:40px;margin:0 0 8px}
+  .subtle{color:var(--muted);font-size:15px;margin:0 0 30px}
+  .newbox{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:22px;margin-bottom:28px}
+  .newbox .fields{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
+  @media(max-width:640px){.newbox .fields{grid-template-columns:1fr}}
+  .newbox input{margin-bottom:0}
+  .newbox .btn{width:auto;white-space:nowrap;padding:13px 22px}
+  .watch{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:18px 20px;margin-bottom:12px}
+  .watch h3{font-family:var(--serif);font-weight:500;font-size:20px;margin:0 0 3px}
+  .watch p{margin:0;color:var(--muted);font-size:14px}
+  .watch .del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:13px}
+  .watch .del:hover{color:var(--bad)}
+  .empty{text-align:center;color:var(--muted);padding:40px;border:1px dashed var(--line);border-radius:4px}
+  .setup{max-width:640px;margin:26px auto 0;font-size:12.5px;color:var(--faint);line-height:1.7}
+  .setup code{background:var(--bg2);border:1px solid var(--line);border-radius:2px;padding:1px 6px;color:var(--gold2);font-size:12px}
+</style>
+</head>
+<body>
+
+<!-- ============ AUTH VIEW ============ -->
+<div class="authwrap" id="authView">
+  <div class="card">
+    <div class="logo"><span class="mark">H</span>Havelo</div>
+    <div class="tagline">Din personliga köpagent</div>
+
+    <div class="tabs">
+      <button class="tab active" id="tabLogin" onclick="setMode('login')">Logga in</button>
+      <button class="tab" id="tabSignup" onclick="setMode('signup')">Skapa konto</button>
+    </div>
+
+    <div class="msg" id="msg"></div>
+
+    <form id="authForm" onsubmit="return false">
+      <label>E-post</label>
+      <input id="email" type="email" placeholder="din@epost.se" autocomplete="email">
+      <label>Lösenord</label>
+      <input id="password" type="password" placeholder="Minst 6 tecken" autocomplete="current-password">
+      <button class="btn" id="submitBtn" onclick="submitAuth()">Logga in</button>
+    </form>
+
+    <div style="text-align:center;margin-top:14px">
+      <button class="linkbtn" onclick="magicLink()">Skicka en inloggningslänk istället</button>
+    </div>
+
+    <div class="row-sep">eller</div>
+    <button class="btn google" onclick="oauth('google')">Fortsätt med Google</button>
+
+    <div class="fineprint">Genom att fortsätta godkänner du Havelos villkor.</div>
+    <div class="setup" id="setupNote"></div>
+  </div>
+</div>
+
+<!-- ============ APP VIEW (inloggad) ============ -->
+<div id="app">
+  <div class="topbar">
+    <div class="logo" style="font-size:20px"><span class="mark" style="width:28px;height:28px;font-size:14px">H</span>Havelo</div>
+    <div style="display:flex;align-items:center;gap:16px">
+      <span class="who" id="who"></span>
+      <button class="btn ghost" style="width:auto;padding:9px 16px;font-size:13px" onclick="logout()">Logga ut</button>
+    </div>
+  </div>
+  <div class="appmain">
+    <div class="eyebrow">Ditt konto</div>
+    <h1>Dina bevakningar</h1>
+    <p class="subtle">Skapa en bevakning så börjar din agent leta. Du får en notis när något matchar.</p>
+
+    <div class="newbox">
+      <div class="fields">
+        <div>
+          <label>Vad söker du?</label>
+          <input id="wTitle" placeholder="T.ex. Ribbåt 6–7 m">
+        </div>
+        <div>
+          <label>Kriterier</label>
+          <input id="wCrit" placeholder="~300 tkr · 2015+ · ≥150 hk">
+        </div>
+        <button class="btn" onclick="addWatch()">Skapa</button>
+      </div>
+    </div>
+
+    <div id="watchList"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* =========================================================================
+   HAVELO – Supabase-inloggning
+   Fyll i dina två nycklar nedan (Supabase → Project Settings → API).
+   Tills de är ifyllda visas ett meddelande om att konfigurera.
+   ========================================================================= */
+const SUPABASE_URL = "https://xnlvlpazbzsabytdgkti.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhubHZscGF6YnpzYWJ5dGRna3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ0NDc5ODUsImV4cCI6MjEwMDAyMzk4NX0.Aa5kB00ZeZlA6vn6gxnEfhfN18vrORS3ZndBnnax1wU";
+
+const CONFIGURED = !SUPABASE_URL.includes("DITT-PROJEKT") && !SUPABASE_ANON_KEY.includes("DIN_ANON_KEY");
+let sb = null, mode = "login";
+
+if (CONFIGURED) {
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} else {
+  document.getElementById("setupNote").innerHTML =
+    "⚙️ <b>Ej konfigurerad än.</b> Klistra in <code>SUPABASE_URL</code> och <code>SUPABASE_ANON_KEY</code> högst upp i skriptet så aktiveras inloggningen. Se setup-guiden.";
+}
+
+function setMode(m){
+  mode = m;
+  document.getElementById("tabLogin").classList.toggle("active", m==="login");
+  document.getElementById("tabSignup").classList.toggle("active", m==="signup");
+  document.getElementById("submitBtn").textContent = m==="login" ? "Logga in" : "Skapa konto";
+  document.getElementById("password").setAttribute("autocomplete", m==="login"?"current-password":"new-password");
+  hideMsg();
+}
+function showMsg(text, kind){ const e=document.getElementById("msg"); e.textContent=text; e.className="msg show "+kind; }
+function hideMsg(){ document.getElementById("msg").className="msg"; }
+function needConfig(){ if(!CONFIGURED){ showMsg("Lägg in dina Supabase-nycklar i koden först.", "warn"); return true; } return false; }
+
+async function submitAuth(){
+  if(needConfig()) return;
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
+  if(!email || !password){ showMsg("Fyll i e-post och lösenord.", "err"); return; }
+  const btn=document.getElementById("submitBtn"); btn.disabled=true;
+  try{
+    if(mode==="signup"){
+      const {error}=await sb.auth.signUp({email, password});
+      if(error) throw error;
+      showMsg("Konto skapat! Kolla din e-post för att bekräfta, sedan kan du logga in.", "ok");
+    }else{
+      const {error}=await sb.auth.signInWithPassword({email, password});
+      if(error) throw error;
+      // onAuthStateChange sköter övergången till app-vyn
+    }
+  }catch(e){ showMsg(oversatt(e.message), "err"); }
+  finally{ btn.disabled=false; }
+}
+
+async function magicLink(){
+  if(needConfig()) return;
+  const email=document.getElementById("email").value.trim();
+  if(!email){ showMsg("Skriv din e-post först, så skickar vi en länk.", "err"); return; }
+  try{
+    const {error}=await sb.auth.signInWithOtp({ email, options:{ emailRedirectTo: location.origin+location.pathname } });
+    if(error) throw error;
+    showMsg("Klart! Vi har mejlat en inloggningslänk till "+email+".", "ok");
+  }catch(e){ showMsg(oversatt(e.message), "err"); }
+}
+
+async function oauth(provider){
+  if(needConfig()) return;
+  const {error}=await sb.auth.signInWithOAuth({ provider, options:{ redirectTo: location.origin+location.pathname } });
+  if(error) showMsg(oversatt(error.message), "err");
+}
+
+async function logout(){ if(sb) await sb.auth.signOut(); }
+
+/* ---- session / vy-växling ---- */
+function showApp(session){
+  document.getElementById("authView").style.display="none";
+  document.getElementById("app").classList.add("show");
+  document.getElementById("who").textContent = session.user.email;
+  loadWatches();
+}
+function showAuth(){
+  document.getElementById("app").classList.remove("show");
+  document.getElementById("authView").style.display="flex";
+}
+
+if(sb){
+  sb.auth.getSession().then(({data})=>{ if(data.session) showApp(data.session); });
+  sb.auth.onAuthStateChange((_event, session)=>{ if(session) showApp(session); else showAuth(); });
+}
+
+/* ---- bevakningar (kräver tabellen "watches", se setup-guiden) ---- */
+async function loadWatches(){
+  const list=document.getElementById("watchList");
+  try{
+    const {data, error}=await sb.from("watches").select("*").order("created_at",{ascending:false});
+    if(error) throw error;
+    if(!data.length){ list.innerHTML=`<div class="empty">Inga bevakningar än. Skapa din första ovan.</div>`; return; }
+    list.innerHTML=data.map(w=>`
+      <div class="watch">
+        <div><h3>${esc(w.titel)}</h3><p>${esc(w.kriterier||"")}</p></div>
+        <button class="del" onclick="delWatch('${w.id}')">Ta bort</button>
+      </div>`).join("");
+  }catch(e){
+    list.innerHTML=`<div class="empty">Kunde inte hämta bevakningar. Har du skapat tabellen <b>watches</b> enligt setup-guiden?</div>`;
+  }
+}
+async function addWatch(){
+  const titel=document.getElementById("wTitle").value.trim();
+  const kriterier=document.getElementById("wCrit").value.trim();
+  if(!titel) return;
+  const {error}=await sb.from("watches").insert({titel, kriterier});
+  if(error){ alert("Kunde inte spara: "+error.message); return; }
+  document.getElementById("wTitle").value=""; document.getElementById("wCrit").value="";
+  loadWatches();
+}
+async function delWatch(id){
+  const {error}=await sb.from("watches").delete().eq("id", id);
+  if(!error) loadWatches();
+}
+
+/* ---- hjälp ---- */
+function esc(s){ return (s||"").replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function oversatt(m){
+  if(/Invalid login credentials/i.test(m)) return "Fel e-post eller lösenord.";
+  if(/already registered/i.test(m)) return "E-posten är redan registrerad – logga in istället.";
+  if(/Password should be at least/i.test(m)) return "Lösenordet måste vara minst 6 tecken.";
+  if(/Email not confirmed/i.test(m)) return "Bekräfta din e-post via länken vi skickade först.";
+  return m;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Havelo – din personliga köpagent</title>
+<meta name="description" content="Havelo – din personliga AI-köpagent. Bevakar marknaden dygnet runt, hittar rätt objekt till rätt pris och sköter kontakten åt dig.">
+<meta property="og:title" content="Havelo – din personliga köpagent">
+<meta property="og:description" content="Köp och sälj rätt, till rätt pris. Agenten bevakar marknaden dygnet runt – du behöver aldrig leta själv.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0d0d0f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d0d0f'/%3E%3Ccircle cx='16' cy='16' r='8.5' fill='none' stroke='%23c9a96a' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0d0f; --bg2:#121013; --panel:#161318; --card:#17151a; --card2:#1c1a20;
+    --ink:#efeae1; --muted:#9b9488; --faint:#6f6a61;
+    --gold:#c9a96a; --gold2:#e3ca94; --goldline:rgba(201,169,106,.22); --hair:rgba(255,255,255,.07);
+    --sage:#93b3a1;
+    --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;font-size:16px}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(20px,5vw,30px)}
+  .eyebrow{font-size:11.5px;text-transform:uppercase;letter-spacing:3px;color:var(--gold);font-weight:600;margin-bottom:16px}
+  h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:.2px}
+  .btn{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:#181410;font-weight:600;font-size:14.5px;border:none;padding:14px 26px;border-radius:2px;cursor:pointer;font-family:var(--sans);letter-spacing:.3px;transition:.2s}
+  .btn:hover{background:var(--gold2)}
+  .btn.ghost{background:transparent;border:1px solid var(--goldline);color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--gold2)}
+  /* nav */
+  nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(13,13,15,.7);border-bottom:1px solid var(--hair)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+  .logo{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-weight:600;font-size:23px;letter-spacing:.5px}
+  .logo .mark{width:32px;height:32px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:16px;font-family:var(--serif);font-weight:600}
+  .logo .ph{font-family:var(--sans);font-size:9.5px;text-transform:uppercase;letter-spacing:1.5px;color:var(--faint);border:1px solid var(--hair);border-radius:2px;padding:2px 7px;margin-left:2px}
+  .navlinks{display:flex;gap:34px;align-items:center;font-size:13.5px;color:var(--muted);letter-spacing:.3px}
+  .navlinks a:hover{color:var(--gold2)}
+  @media(max-width:760px){.navlinks a:not(.btn){display:none}}
+  /* hero */
+  .hero{position:relative;overflow:hidden;padding:clamp(64px,12vw,110px) 0 clamp(56px,9vw,96px)}
+  .hero:before{content:"";position:absolute;width:900px;height:900px;right:-320px;top:-420px;border-radius:50%;
+    background:radial-gradient(circle,rgba(201,169,106,.10),transparent 60%);pointer-events:none}
+  .hero .in{position:relative;max-width:780px}
+  .kicker{display:inline-flex;align-items:center;gap:9px;font-size:11px;text-transform:uppercase;letter-spacing:2.4px;color:var(--gold);border:1px solid var(--goldline);border-radius:2px;padding:8px 15px;margin-bottom:30px}
+  h1{font-size:clamp(40px,8vw,66px);line-height:1.07;margin:0 0 24px;font-weight:500}
+  h1 em{font-style:italic;color:var(--gold2)}
+  .lead{font-size:clamp(16px,2.4vw,19px);color:var(--muted);margin:0 0 38px;max-width:600px;font-weight:400}
+  .signup{display:flex;gap:12px;flex-wrap:wrap;max-width:540px}
+  .signup input{flex:1;min-width:230px;background:transparent;border:1px solid var(--hair);border-radius:2px;padding:15px 17px;color:var(--ink);font-size:15px;font-family:var(--sans)}
+  .signup input::placeholder{color:var(--faint)}
+  .signup input:focus{outline:none;border-color:var(--gold)}
+  .microcopy{font-size:12.5px;color:var(--faint);margin-top:16px;letter-spacing:.3px}
+  /* sections */
+  .section{padding:clamp(56px,9vw,96px) 0;border-top:1px solid var(--hair)}
+  h2{font-size:clamp(30px,5.2vw,44px);line-height:1.1;margin:0 0 18px;font-weight:500}
+  .sub{color:var(--muted);font-size:clamp(15px,2.2vw,17px);max-width:640px;margin:0 0 clamp(34px,5vw,48px);font-weight:400}
+  /* modes */
+  .modes{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:760px){.modes{grid-template-columns:1fr}}
+  .mode{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--hair);border-radius:3px;padding:38px}
+  .mode:hover{border-color:var(--goldline)}
+  .mode .lbl{font-size:11px;text-transform:uppercase;letter-spacing:2.5px;color:var(--gold);margin-bottom:18px}
+  .mode h3{font-size:28px;margin:0 0 12px;font-weight:500}
+  .mode p{color:var(--muted);margin:0 0 22px;font-size:15.5px}
+  .mode ul{margin:0;padding:0;list-style:none}
+  .mode li{position:relative;padding:12px 0 12px 26px;font-size:15px;border-top:1px solid var(--hair)}
+  .mode li:before{content:"";position:absolute;left:0;top:19px;width:8px;height:8px;border-right:1px solid var(--gold);border-bottom:1px solid var(--gold);transform:rotate(45deg)}
+  /* categories */
+  .cats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--hair)}
+  @media(max-width:760px){.cats{grid-template-columns:1fr 1fr}}
+  .cat{padding:44px 26px;text-align:center;border-right:1px solid var(--hair)}
+  .cat:last-child{border-right:none}
+  @media(max-width:760px){.cat{border-bottom:1px solid var(--hair)}}
+  .cat svg{color:var(--gold);margin-bottom:16px}
+  .cat b{display:block;font-family:var(--serif);font-size:23px;font-weight:500}
+  .cat span{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--faint);margin-top:4px;display:block}
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+  @media(max-width:860px){.steps{grid-template-columns:1fr 1fr}}
+  .step .n{font-family:var(--serif);font-size:34px;color:var(--gold);font-style:italic;margin-bottom:10px}
+  .step h4{font-family:var(--serif);margin:0 0 8px;font-size:21px;font-weight:500}
+  .step p{margin:0;color:var(--muted);font-size:14.5px}
+  .step{padding-top:20px;border-top:1px solid var(--goldline)}
+  /* pricing */
+  .prices{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:760px}
+  @media(max-width:760px){.prices{grid-template-columns:1fr}}
+  .price{background:var(--card);border:1px solid var(--hair);border-radius:3px;padding:34px;position:relative}
+  .price.pop{border-color:var(--goldline);background:linear-gradient(180deg,rgba(201,169,106,.06),var(--card))}
+  .price .tag{position:absolute;top:20px;right:20px;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold)}
+  .price .name{font-family:var(--serif);font-size:22px;font-weight:500}
+  .price .amt{font-family:var(--serif);font-size:52px;font-weight:500;margin:10px 0 4px;line-height:1}
+  .price .amt small{font-family:var(--sans);font-size:15px;color:var(--muted);font-weight:400}
+  .price .desc{font-size:14.5px;color:var(--muted);margin-bottom:22px}
+  .price ul{margin:0 0 26px;padding:0;list-style:none}
+  .price li{position:relative;padding:11px 0 11px 24px;font-size:14.5px;border-top:1px solid var(--hair)}
+  .price li:before{content:"";position:absolute;left:0;top:18px;width:7px;height:7px;border-right:1px solid var(--gold);border-bottom:1px solid var(--gold);transform:rotate(45deg)}
+  /* cta */
+  .ctaband{text-align:center;padding:20px 0}
+  .ctaband h2{font-size:clamp(32px,6vw,50px)}
+  .ctaband .signup{margin:30px auto 0;justify-content:center}
+  footer{border-top:1px solid var(--hair);padding:34px 0;color:var(--faint);font-size:12.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;letter-spacing:.3px}
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gold);color:#181410;font-weight:600;padding:13px 24px;border-radius:2px;opacity:0;transition:.3s;z-index:60;letter-spacing:.3px}
+  .toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+  @media(max-width:560px){
+    .navin{padding:16px 0}
+    .signup{flex-direction:column}
+    .signup input{min-width:0;width:100%}
+    .signup .btn{width:100%;justify-content:center}
+    .mode{padding:28px}
+    .price{padding:26px}
+  }
+</style>
+</head>
+<body>
+<nav><div class="wrap navin">
+  <div class="logo"><span class="mark">H</span>Havelo</div>
+  <div class="navlinks">
+    <a href="#hur">Så funkar det</a>
+    <a href="#kategorier">Kategorier</a>
+    <a href="#pris">Pris</a>
+    <a href="marknad.html">Marknad</a>
+    <a href="login.html" class="btn" style="padding:10px 20px">Skapa konto</a>
+  </div>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero"><div class="wrap in">
+  <span class="kicker">Personlig köpagent · driven av AI</span>
+  <h1>Köp och sälj rätt.<br><em>Till rätt pris.</em></h1>
+  <p class="lead">Berätta vad du söker. Din agent bevakar marknaden dygnet runt, avgör när priset är rätt och sköter kontakten – diskret och åt dig. Du behöver aldrig leta själv.</p>
+  <div class="signup" id="start">
+    <input id="email1" type="email" placeholder="Din e-postadress" autocomplete="email">
+    <button class="btn" onclick="join('email1')">Ansök om tillgång</button>
+  </div>
+  <div class="microcopy">Kostnadsfritt att gå med · bevakning från 99 kr/mån · ingen bindningstid</div>
+</div></header>
+
+<!-- MODES -->
+<section class="section" id="lagen"><div class="wrap">
+  <div class="eyebrow">Två sidor av marknaden</div>
+  <h2>Vare sig du köper eller säljer</h2>
+  <p class="sub">Samma agent arbetar åt dig i båda riktningarna – finner rätt objekt när du köper, och rätt köpare när du säljer.</p>
+  <div class="modes">
+    <div class="mode">
+      <div class="lbl">När du köper</div>
+      <h3>Agenten letar åt dig</h3>
+      <p>Säg vad du söker med egna ord. Marknaden bevakas oavbrutet och du hörs av när något värt din tid dyker upp.</p>
+      <ul>
+        <li>Bevakar alla stora marknadsplatser samtidigt</li>
+        <li>Bedömer om priset är rätt – inte bara visar annonsen</li>
+        <li>Författar kontaktmejl och en förhandlingsstrategi</li>
+      </ul>
+    </div>
+    <div class="mode">
+      <div class="lbl">När du säljer</div>
+      <h3>Agenten finner köparen</h3>
+      <p>Berätta vad du har. Marknadens köpes-annonser genomsöks och du ser vilka som redan söker just din vara.</p>
+      <ul>
+        <li>Hittar köpare som aktivt letar efter din vara</li>
+        <li>Visar vad de är beredda att betala</li>
+        <li>Författar ett färdigt meddelande till köparen</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- CATEGORIES -->
+<section class="section" id="kategorier"><div class="wrap">
+  <div class="eyebrow">Kategorier</div>
+  <h2>Skapad för de större affärerna</h2>
+  <p class="sub">Vi börjar där värdet – och osäkerheten kring rätt pris – är som störst. Fler kategorier tillkommer löpande, med samma motor.</p>
+  <div class="cats">
+    <div class="cat">
+      <svg width="42" height="42" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 30l3-9a3 3 0 0 1 3-2h20a3 3 0 0 1 3 2l3 9"/><path d="M6 30h36v5a1 1 0 0 1-1 1h-3M11 36H7a1 1 0 0 1-1-1v-5"/><circle cx="15" cy="36" r="2.6"/><circle cx="33" cy="36" r="2.6"/></svg>
+      <b>Bil</b><span>störst volym</span>
+    </div>
+    <div class="cat">
+      <svg width="42" height="42" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M10 29h28l-3.5 7.5a2 2 0 0 1-1.8 1.1H15.3a2 2 0 0 1-1.8-1.1z"/><path d="M24 29V13l11 11z"/><path d="M24 29V17"/></svg>
+      <b>Båt</b><span>live idag</span>
+    </div>
+    <div class="cat">
+      <svg width="42" height="42" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16h30a4 4 0 0 1 4 4v12H6z"/><path d="M6 24h34"/><path d="M6 32v3M40 32v3"/><circle cx="15" cy="35" r="2.6"/><circle cx="31" cy="35" r="2.6"/></svg>
+      <b>Husbil</b><span>på väg</span>
+    </div>
+    <div class="cat">
+      <svg width="42" height="42" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="31" r="6.5"/><circle cx="36" cy="31" r="6.5"/><path d="M12 31l7-9h9l4 5"/><path d="M19 22h8"/><path d="M30 31l-6-9"/></svg>
+      <b>MC</b><span>på väg</span>
+    </div>
+  </div>
+</div></section>
+
+<!-- HOW -->
+<section class="section" id="hur"><div class="wrap">
+  <div class="eyebrow">Så funkar det</div>
+  <h2>Du säger vad du vill. Resten sköts.</h2>
+  <p class="sub">Ingen sitter och bläddrar bland annonser. Agenten arbetar i det tysta och hör av sig när det är läge.</p>
+  <div class="steps">
+    <div class="step"><div class="n">I</div><h4>Säg vad du vill</h4><p>Skriv fritt: ”ribbåt runt 300 000, 6–7 m, 2015 eller nyare”. Agenten tolkar dina kriterier.</p></div>
+    <div class="step"><div class="n">II</div><h4>Vi bevakar dygnet runt</h4><p>Marknaden genomsöks automatiskt flera gånger om dagen – du får en notis, inte ännu en flik.</p></div>
+    <div class="step"><div class="n">III</div><h4>Vi bedömer priset</h4><p>Varje träff får ett omdöme: rätt pris, marknadspris eller för högt.</p></div>
+    <div class="step"><div class="n">IV</div><h4>Vi sköter kontakten</h4><p>Ett färdigt kontaktmejl och en förhandlingsstrategi med föreslaget bud.</p></div>
+  </div>
+</div></section>
+
+<!-- PRICING -->
+<section class="section" id="pris"><div class="wrap">
+  <div class="eyebrow">Medlemskap</div>
+  <h2>Enkelt. Utan bindningstid.</h2>
+  <p class="sub">Gå med kostnadsfritt. Betala endast när du aktivt bevakar något – en månad i taget.</p>
+  <div class="prices">
+    <div class="price">
+      <div class="name">Bas</div>
+      <div class="amt">99 kr<small> / mån</small></div>
+      <div class="desc">För dig som söker en specifik sak.</div>
+      <ul>
+        <li>Ett aktivt sökobjekt</li>
+        <li>Bevakning &amp; prisbedömning</li>
+        <li>Kontaktmejl &amp; förhandlingshjälp</li>
+      </ul>
+      <a class="btn ghost" href="login.html" style="width:100%;justify-content:center">Välj Bas</a>
+    </div>
+    <div class="price pop">
+      <div class="tag">Rekommenderas</div>
+      <div class="name">Plus</div>
+      <div class="amt">149 kr<small> / mån</small></div>
+      <div class="desc">För dig som jämför flera alternativ.</div>
+      <ul>
+        <li>Upp till tre sökobjekt</li>
+        <li>Allt i Bas</li>
+        <li>Både köp- och säljläge</li>
+      </ul>
+      <a class="btn" href="login.html" style="width:100%;justify-content:center">Välj Plus</a>
+    </div>
+  </div>
+</div></section>
+
+<!-- CTA -->
+<section class="section"><div class="wrap">
+  <div class="ctaband">
+    <div class="eyebrow" style="text-align:center">Kom igång</div>
+    <h2>Sluta leta.<br>Låt agenten göra jobbet.</h2>
+    <div class="signup">
+      <input id="email2" type="email" placeholder="Din e-postadress" autocomplete="email">
+      <button class="btn" onclick="join('email2')">Ansök om tillgång</button>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap" style="display:flex;justify-content:space-between;width:100%;flex-wrap:wrap;gap:10px">
+  <div>Havelo <span style="color:var(--faint)">· 2026</span></div>
+  <div>Demo · e-postinsamling kräver koppling till formulärtjänst för skarp drift</div>
+</div></footer>
+
+<div class="toast" id="toast"></div>
+<script>
+// === Väntelista ===
+// Klart att använda: skapa ett gratis formulär på formspree.io (tar 2 min),
+// och klistra in ditt formulär-ID nedan (t.ex. "https://formspree.io/f/abcdwxyz").
+// Tills dess visas ett tack-meddelande utan att spara (demo-läge).
+const FORM_ENDPOINT = "https://formspree.io/f/DITT_ID_HÄR";
+
+function isEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+async function join(id){
+  const el=document.getElementById(id); const v=el.value.trim();
+  if(!isEmail(v)){ el.focus(); el.style.borderColor="#b5766f"; return; }
+  el.style.borderColor="";
+  if(FORM_ENDPOINT.includes("DITT_ID_HÄR")){ el.value=""; showToast("Tack — du står nu på listan."); return; }
+  try{
+    const r=await fetch(FORM_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},
+      body:JSON.stringify({email:v,kalla:"landningssida"})});
+    if(r.ok){ el.value=""; showToast("Tack — du står nu på listan."); }
+    else showToast("Något gick fel — försök igen.");
+  }catch(e){ showToast("Något gick fel — försök igen."); }
+}
+function scrollStart(){ document.getElementById("start").scrollIntoView({behavior:"smooth",block:"center"});
+  const e=document.getElementById("email1"); if(e) setTimeout(()=>e.focus(),400); }
+function showToast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("on");clearTimeout(window._t);window._t=setTimeout(()=>t.classList.remove("on"),2800);}
+</script>
+</body>
+</html>

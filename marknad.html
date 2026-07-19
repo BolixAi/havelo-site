@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Havelo – Marknad</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d0d0f'/%3E%3Ccircle cx='16' cy='16' r='8.5' fill='none' stroke='%23c9a96a' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0d0f; --bg2:#121013; --card:#17151a; --card2:#1c1a20; --line:rgba(255,255,255,.08);
+    --ink:#efeae1; --muted:#9b9488; --faint:#6f6a61;
+    --gold:#c9a96a; --gold2:#e3ca94; --goldline:rgba(201,169,106,.24);
+    --good:#8fb39b; --bad:#c98a86;
+    --serif:'Cormorant Garamond',Georgia,serif; --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(18px,4vw,28px)}
+  .logo{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:.5px}
+  .logo .mark{width:30px;height:30px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:15px;font-family:var(--serif);font-weight:600}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--gold);color:#181410;font-weight:600;font-size:14px;border:none;padding:11px 18px;border-radius:2px;cursor:pointer;font-family:var(--sans);transition:.2s}
+  .btn:hover{background:var(--gold2)}
+  .btn.ghost{background:transparent;border:1px solid var(--goldline);color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--gold2)}
+  .btn.sm{padding:8px 14px;font-size:13px}
+  nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(13,13,15,.72);border-bottom:1px solid var(--line)}
+  .navin{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:12px}
+  .navr{display:flex;align-items:center;gap:12px}
+  .navr .who{font-size:12.5px;color:var(--muted)}
+  /* search header */
+  .head{padding:34px 0 8px}
+  .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:3px;color:var(--gold);font-weight:600;margin-bottom:10px}
+  h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,5vw,42px);margin:0 0 16px}
+  .searchbar{display:flex;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:3px;padding:7px 7px 7px 15px;align-items:center;max-width:640px}
+  .searchbar:focus-within{border-color:var(--gold)}
+  .searchbar .mag{color:var(--muted);font-size:17px}
+  #q{flex:1;background:transparent;border:none;outline:none;color:var(--ink);font-size:15px;font-family:var(--sans);padding:9px 4px}
+  .cats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+  .cat{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:2px;padding:8px 15px;font-size:13.5px;cursor:pointer;font-family:var(--sans)}
+  .cat.active{background:var(--gold);color:#181410;border-color:var(--gold);font-weight:600}
+  .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 4px;color:var(--muted);font-size:13px}
+  .filters input,.filters select{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:2px;padding:8px 10px;font-family:var(--sans);font-size:13px}
+  .filters input{width:110px}
+  /* results */
+  .count{margin:22px 0 14px;font-size:13px;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding-bottom:60px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:18px;display:flex;flex-direction:column}
+  .card:hover{border-color:var(--goldline)}
+  .card .kat{font-size:10.5px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:8px}
+  .card h3{font-family:var(--serif);font-weight:500;font-size:21px;margin:0 0 6px;line-height:1.2}
+  .card .specs{color:var(--muted);font-size:13px;margin-bottom:12px}
+  .card .pris{font-family:var(--serif);font-size:26px;font-weight:600;margin-bottom:12px}
+  .card .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:12px}
+  .card .kontakt{font-size:12.5px;color:var(--muted)}
+  .card .del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:12px}
+  .card .del:hover{color:var(--bad)}
+  .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:60px 20px;border:1px dashed var(--line);border-radius:3px}
+  .empty b{color:var(--ink)}
+  .notice{background:rgba(201,169,106,.1);border:1px solid var(--goldline);color:var(--gold2);border-radius:3px;padding:12px 15px;font-size:13.5px;margin:16px 0}
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(4,8,15,.75);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:60}
+  .overlay.on{display:flex}
+  .modal{background:var(--bg2);border:1px solid var(--line);border-radius:4px;max-width:520px;width:100%;max-height:92vh;overflow:auto}
+  .mhead{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+  .mhead h3{font-family:var(--serif);font-weight:500;font-size:22px;margin:0}
+  .mhead .x{background:none;border:none;color:var(--muted);font-size:23px;cursor:pointer}
+  .mbody{padding:20px 22px}
+  label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);margin:0 0 6px}
+  .mbody input,.mbody select,.mbody textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:2px;padding:11px 12px;color:var(--ink);font-size:14px;font-family:var(--sans);margin-bottom:14px}
+  .mbody textarea{min-height:80px;resize:vertical}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .msg{font-size:13px;padding:10px 12px;border-radius:2px;margin-bottom:12px;display:none}
+  .msg.show{display:block}
+  .msg.err{background:rgba(201,138,134,.12);border:1px solid rgba(201,138,134,.3);color:var(--bad)}
+  .msg.ok{background:rgba(143,179,155,.12);border:1px solid rgba(143,179,155,.3);color:var(--good)}
+</style>
+</head>
+<body>
+<nav><div class="wrap navin">
+  <a href="index.html" class="logo"><span class="mark">H</span>Havelo</a>
+  <div class="navr">
+    <a href="index.html" class="btn ghost sm">Hem</a>
+    <button class="btn sm" id="annonseraBtn" onclick="openPost()">+ Annonsera</button>
+    <span class="who" id="who"></span>
+    <a href="login.html" class="btn ghost sm" id="loginLink">Logga in</a>
+  </div>
+</div></nav>
+
+<div class="wrap">
+  <div class="head">
+    <div class="eyebrow">Marknad</div>
+    <h1>Sök bland objekt till salu</h1>
+    <div class="searchbar">
+      <span class="mag">⌕</span>
+      <input id="q" placeholder="Sök märke eller modell – t.ex. Brig, RAV4, Yamaha…" autocomplete="off">
+    </div>
+    <div class="cats" id="cats"></div>
+    <div class="filters">
+      <span>Pris</span>
+      <input id="pmin" type="number" placeholder="min" oninput="search()">
+      <span>–</span>
+      <input id="pmax" type="number" placeholder="max" oninput="search()">
+      <span>Årsmodell från</span>
+      <input id="ymin" type="number" placeholder="t.ex. 2015" oninput="search()">
+      <span>Sortera</span>
+      <select id="sort" onchange="search()">
+        <option value="nyast">Senast inlagda</option>
+        <option value="pl">Lägsta pris</option>
+        <option value="ph">Högsta pris</option>
+        <option value="yn">Nyaste årsmodell</option>
+      </select>
+    </div>
+  </div>
+  <div id="notice"></div>
+  <div class="count" id="count"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- POST MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="mhead"><h3>Annonsera ditt objekt</h3><button class="x" onclick="closePost()">×</button></div>
+    <div class="mbody">
+      <div class="msg" id="pmsg"></div>
+      <label>Kategori</label>
+      <select id="pKat"><option>Bil</option><option>Båt</option><option>MC</option><option>Husbil</option></select>
+      <label>Rubrik</label>
+      <input id="pTitel" placeholder="T.ex. Brig Eagle 650">
+      <div class="two">
+        <div><label>Årsmodell</label><input id="pAr" type="number" placeholder="2018"></div>
+        <div><label>Pris (kr)</label><input id="pPris" type="number" placeholder="395000"></div>
+      </div>
+      <div class="two">
+        <div><label>Plats</label><input id="pPlats" placeholder="Stockholm"></div>
+        <div><label>Motor / drivning</label><input id="pMotor" placeholder="225 hk utombordare"></div>
+      </div>
+      <label>Beskrivning</label>
+      <textarea id="pBesk" placeholder="Skick, historik, utrustning…"></textarea>
+      <label>Kontakt (telefon eller e-post)</label>
+      <input id="pKontakt" placeholder="070-123 45 67">
+      <button class="btn" style="width:100%;margin-top:6px" onclick="submitPost()">Publicera annons</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* Samma två nycklar som i login.html (Supabase → Project Settings → API) */
+const SUPABASE_URL = "https://xnlvlpazbzsabytdgkti.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhubHZscGF6YnpzYWJ5dGRna3RpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ0NDc5ODUsImV4cCI6MjEwMDAyMzk4NX0.Aa5kB00ZeZlA6vn6gxnEfhfN18vrORS3ZndBnnax1wU";
+
+const CONFIGURED = !SUPABASE_URL.includes("DITT-PROJEKT") && !SUPABASE_ANON_KEY.includes("DIN_ANON_KEY");
+let sb=null, session=null, activeCat="Alla";
+const CATS=["Alla","Bil","Båt","MC","Husbil"];
+
+if(CONFIGURED){ sb=window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); }
+
+function renderCats(){
+  document.getElementById("cats").innerHTML=CATS.map(c=>
+    `<button class="cat${c===activeCat?' active':''}" onclick="setCat('${c}')">${c}</button>`).join("");
+}
+function setCat(c){ activeCat=c; renderCats(); search(); }
+function kr(n){ return (n==null?"—":Number(n).toLocaleString("sv-SE")+" kr"); }
+function esc(s){ return (s||"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+async function refreshSession(){
+  if(!sb) return;
+  const {data}=await sb.auth.getSession();
+  session=data.session;
+  document.getElementById("who").textContent = session? session.user.email : "";
+  document.getElementById("loginLink").textContent = session? "Logga ut" : "Logga in";
+  document.getElementById("loginLink").onclick = session? (e)=>{e.preventDefault();sb.auth.signOut().then(refreshSession);} : null;
+  if(session) document.getElementById("loginLink").href="#";
+}
+
+async function search(){
+  const grid=document.getElementById("grid"), count=document.getElementById("count");
+  if(!CONFIGURED){
+    document.getElementById("notice").innerHTML=`<div class="notice">⚙️ Lägg in dina Supabase-nycklar högst upp i skriptet (samma som i login.html) så aktiveras sök och annonsering. Se setup-guiden.</div>`;
+    grid.innerHTML=`<div class="empty">Marknaden aktiveras när databasen är kopplad.</div>`; return;
+  }
+  const q=document.getElementById("q").value.trim();
+  const pmin=document.getElementById("pmin").value, pmax=document.getElementById("pmax").value, ymin=document.getElementById("ymin").value;
+  const sort=document.getElementById("sort").value;
+  let query=sb.from("listings").select("*");
+  if(activeCat!=="Alla") query=query.eq("kategori", activeCat);
+  if(q) query=query.ilike("titel", "%"+q+"%");
+  if(pmin) query=query.gte("pris", Number(pmin));
+  if(pmax) query=query.lte("pris", Number(pmax));
+  if(ymin) query=query.gte("arsmodell", Number(ymin));
+  if(sort==="pl") query=query.order("pris",{ascending:true});
+  else if(sort==="ph") query=query.order("pris",{ascending:false});
+  else if(sort==="yn") query=query.order("arsmodell",{ascending:false});
+  else query=query.order("created_at",{ascending:false});
+  const {data,error}=await query;
+  if(error){ grid.innerHTML=`<div class="empty">Kunde inte hämta annonser. Har du skapat tabellen <b>listings</b> enligt setup-guiden?</div>`; count.textContent=""; return; }
+  count.textContent = data.length? `${data.length} objekt` : "";
+  if(!data.length){ grid.innerHTML=`<div class="empty"><b>Inga annonser än.</b><br>Bli först – klicka “+ Annonsera” och lägg upp ditt objekt.</div>`; return; }
+  grid.innerHTML=data.map(o=>`
+    <div class="card">
+      <div class="kat">${esc(o.kategori)}</div>
+      <h3>${esc(o.titel)}</h3>
+      <div class="specs">${[o.arsmodell, o.motor, o.plats].filter(Boolean).map(esc).join(" · ")}</div>
+      <div class="pris">${kr(o.pris)}</div>
+      ${o.beskrivning?`<div class="specs">${esc(o.beskrivning)}</div>`:""}
+      <div class="foot">
+        <span class="kontakt">${o.kontakt?("✆ "+esc(o.kontakt)):"Kontaktuppgift saknas"}</span>
+        ${session && session.user.id===o.user_id ? `<button class="del" onclick="del('${o.id}')">Ta bort</button>`:""}
+      </div>
+    </div>`).join("");
+}
+
+function openPost(){
+  if(!CONFIGURED){ alert("Koppla Supabase först (se setup-guiden)."); return; }
+  if(!session){ window.location.href="login.html"; return; }
+  document.getElementById("overlay").classList.add("on");
+}
+function closePost(){ document.getElementById("overlay").classList.remove("on"); }
+function pmsg(t,k){ const e=document.getElementById("pmsg"); e.textContent=t; e.className="msg show "+k; }
+
+async function submitPost(){
+  const titel=document.getElementById("pTitel").value.trim();
+  if(!titel){ pmsg("Ange en rubrik.","err"); return; }
+  const row={
+    kategori:document.getElementById("pKat").value,
+    titel,
+    arsmodell:parseInt(document.getElementById("pAr").value)||null,
+    pris:parseInt(document.getElementById("pPris").value)||null,
+    plats:document.getElementById("pPlats").value.trim()||null,
+    motor:document.getElementById("pMotor").value.trim()||null,
+    beskrivning:document.getElementById("pBesk").value.trim()||null,
+    kontakt:document.getElementById("pKontakt").value.trim()||null
+  };
+  const {error}=await sb.from("listings").insert(row);
+  if(error){ pmsg("Kunde inte publicera: "+error.message,"err"); return; }
+  pmsg("Publicerad!","ok");
+  ["pTitel","pAr","pPris","pPlats","pMotor","pBesk","pKontakt"].forEach(id=>document.getElementById(id).value="");
+  setTimeout(()=>{ closePost(); search(); }, 700);
+}
+
+async function del(id){
+  const {error}=await sb.from("listings").delete().eq("id",id);
+  if(!error) search();
+}
+
+document.getElementById("q").addEventListener("input", search);
+document.getElementById("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closePost(); });
+
+renderCats();
+if(sb){ sb.auth.onAuthStateChange(()=>refreshSession()); refreshSession(); }
+search();
+</script>
+</body>
+</html>
