@@ -23,7 +23,7 @@ test.afterEach(() => {
 
 test("rejects missing authentication before external calls", async () => {
   configured();
-  const { handler } = require("./ai");
+  const { handler } = require("../netlify/functions/ai");
   const result = await handler(request({ message: "Hej" }, ""));
   assert.equal(result.statusCode, 401);
 });
@@ -31,7 +31,7 @@ test("rejects missing authentication before external calls", async () => {
 test("fails closed for any other organisation", async () => {
   configured();
   process.env.HAVELO_STAGING_ORGANISATION_ID = "org-other";
-  const { handler } = require("./ai");
+  const { handler } = require("../netlify/functions/ai");
   const result = await handler(request({ message: "Hej" }));
   assert.equal(result.statusCode, 503);
   assert.equal(JSON.parse(result.body).error, "organisation_not_allowlisted");
@@ -50,7 +50,7 @@ test("derives user identity server-side and sends a fixed Havelo scope", async (
       json: async () => ({ assistant_text: "Svar", model: "qvant-general", usage: {} }),
     };
   };
-  const { handler } = require("./ai");
+  const { handler } = require("../netlify/functions/ai");
   const result = await handler(
     request({
       message: "Hitta en båt",
@@ -76,9 +76,8 @@ test("does not return runtime credentials to the browser", async () => {
     String(url).includes("supabase.co")
       ? { ok: true, json: async () => ({ id: USER_ID }) }
       : { ok: true, json: async () => ({ assistant_text: "Svar", model: "qvant-general", usage: {} }) };
-  const { handler } = require("./ai");
+  const { handler } = require("../netlify/functions/ai");
   const result = await handler(request({ message: "Hej" }));
   assert.equal(result.statusCode, 200);
   assert.doesNotMatch(result.body, /secret|client-id|access-client/i);
 });
-

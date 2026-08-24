@@ -2,8 +2,7 @@
   "name": "havelo-site",
   "private": true,
   "scripts": {
-    "test": "node --test netlify/functions/*.test.js",
+    "test": "node --test tests/*.test.js",
     "check": "node --check netlify/functions/ai.js && node --check netlify/functions/search.js"
   }
 }
-
