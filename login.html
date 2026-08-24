@@ -177,6 +177,17 @@
 
     <div class="agent" id="agentBox"></div>
 
+    <div class="sech" style="margin-top:36px">Fråga Havelo AI</div>
+    <p class="subtle" style="margin-bottom:16px">Stagingtest av den isolerade Havelo-profilen i QvantCom AI.</p>
+    <div class="newbox">
+      <label for="aiMessage">Din fråga</label>
+      <div class="two2" style="grid-template-columns:1fr auto;align-items:end">
+        <input id="aiMessage" placeholder="T.ex. Vad ska jag kontrollera före ett båtköp?">
+        <button id="aiAskBtn" class="btn" style="width:auto;padding:13px 28px" onclick="askHaveloAI()">Fråga AI</button>
+      </div>
+      <div class="agent" id="aiAnswer" aria-live="polite"></div>
+    </div>
+
     <div class="sech" style="margin-top:36px">Dina bevakningar</div>
     <div id="watchList" style="margin-top:14px"></div>
   </div>
@@ -341,6 +352,30 @@ async function agentSearch(cat, titel){
   }catch(e){
     box.innerHTML=`<div class="bubble">✓ Bevakning skapad för <b>${esc(titel)}</b>. Live-sökningen aktiveras när sök-funktionen är deployad – sen visar jag de bästa träffarna direkt här.</div>`;
   }
+}
+
+async function askHaveloAI(){
+  const message=document.getElementById("aiMessage").value.trim();
+  const answer=document.getElementById("aiAnswer");
+  const button=document.getElementById("aiAskBtn");
+  if(!message){ answer.innerHTML=`<div class="bubble">Skriv en fråga först.</div>`; return; }
+  button.disabled=true;
+  answer.innerHTML=`<div class="bubble">Havelo AI tänker…</div>`;
+  try{
+    const {data}=await sb.auth.getSession();
+    const token=data.session?.access_token;
+    if(!token) throw new Error("Du behöver logga in igen.");
+    const r=await fetch("/.netlify/functions/ai",{
+      method:"POST",
+      headers:{"content-type":"application/json","authorization":`Bearer ${token}`},
+      body:JSON.stringify({message})
+    });
+    const result=await r.json();
+    if(!r.ok || typeof result.assistant_text!=="string") throw new Error(result.error||"AI-svaret kunde inte hämtas.");
+    answer.innerHTML=`<div class="bubble">${esc(result.assistant_text)}</div>`;
+  }catch(error){
+    answer.innerHTML=`<div class="bubble" style="border-color:var(--bad);color:var(--bad)">${esc(error.message||"AI-svaret kunde inte hämtas.")}</div>`;
+  }finally{ button.disabled=false; }
 }
 async function delWatch(id){
   const {error}=await sb.from("watches").delete().eq("id", id);
